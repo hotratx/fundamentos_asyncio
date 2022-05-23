@@ -1,0 +1,1 @@
+from fundamentos_asyncio.util.delay_functions import delay

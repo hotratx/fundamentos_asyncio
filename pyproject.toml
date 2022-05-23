@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "library_asyncio"
+name = "fundamentos_asyncio"
 version = "0.1.0"
 description = ""
 authors = ["hotratx <mgviero@gmail.com>"]
