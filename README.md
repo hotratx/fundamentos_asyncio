@@ -115,19 +115,19 @@ Aqui criamos uma `task` que requer 3 segundos para ser executada, o print retorn
 <class '_asyncio.Task'>, que mostra que não é uma coroutine mas sim uma `task`. 
 
 #### Rodando multiplas tasks concorentes
-Se executarmos um coroutine diretamento com asyncrio.run(main()) não estamos 
+Se executarmos uma coroutine diretamente com asyncrio.run(main()) nos não estamos 
 colocando ela no `loop event` para ser executado, logo não podemos executar nada 
 simultaneamente. Para executar coroutines simultaneamente precisamos usar as `tasks`.
 As `tasks` são envolucros em torno de uma coroutine que a agendam para serem 
 executadas no `loop event` o mais rápido possível. Esse programação e execução 
-acontecem de maneira não bloqueante, o que significa que uma vez que criamos a 
+acontece de maneira não bloqueante, o que significa que uma vez que criamos a 
 `task` podemos executar outro código instantaneamente enquanto a `task` está em 
 execução. Isso contrasta com o `await` que age de maneira bloquadora, o que 
 significa que pausamos toda a coroutine até o resultado que ela aguarda retorne.
 
 O fato de podermos criar tarefas e agendá-las para executar instantaneamente no evento
-Loop significa que podemos executar várias tarefas aproximadamente ao mesmo tempo. Quando estes
-As tarefas envolvem uma operação de longa duração, qualquer espera que aconteça acontecerá simultaneamente.
+loop significa que podemos executar várias tarefas aproximadamente ao mesmo tempo, quando estas
+tarefas envolvem uma operação de longa duração, qualquer espera que aconteça acontecerá simultaneamente.
 
 Uma vez chamada `asyncio.create_task(delay(3))` ela será enviada para o `loop event`
 e será executada imediatamente sem bloquear o nosso thread principal, logo nosso 
@@ -152,8 +152,8 @@ A função será executada em torno de 3 segundos, pois estão sendo executadas 
 forma concorente.
 
 ### Cancelando Tasks
-As `tasks` possui um método `cancel` para parar a task. O cancelamento de uma
-`task` irá levantar um `CancelledError`, log devemos manipular este erro.
+As `tasks` possuiem um método `cancel` para parar a task. O cancelamento de uma
+`task` irá levantar um `CancelledError`, devemos manipular este erro.
 
 ```python
 import asyncio
@@ -180,3 +180,40 @@ asyncio.run(main())
 Uma vez chamado o `long_task.cancel()` a task não será cancelada imediatamente, 
 ela será cancelada no momento em que ela chegar em um `await`.
 
+### Configurando timeout
+Em vez de verificar em intervalo de tempo se a tarefa para cancelar podemos 
+usar um função auxiliar onde especificamos um tempo maximo caso a tarefa ultrapase 
+será cancelada automaticamente.
+
+O asyncio prove `asyncio.wait_for`, esta função pega um coroutine ou uma task 
+e um timeout especifico em segundos e retorna uma corotina que podemos usar com 
+await. Se a task demorar mais que o tempo definido será levantado um TimeoutException.
+
+### Usando Shield
+Caso queiramos saber se a tasks está demorando mais que o esperdo sem cancelar 
+a task, asyncio prove um função `shield` que irá prevenir o cancelamento.
+
+
+## Futures 
+É um objeto que contém um valor que esperamos obter em algum ponto no futuro, 
+mas não agora.
+
+O futuro tem dois estados o primeiro quando criamos e eles ainda não tem o 
+valor\resultado ele esta incompleto, o segundo quando ele já possui o valor.
+
+```python
+from asyncio import Future
+
+my_future = Future()
+
+print(f'Is my_future done? {my_future.done()}')
+
+my_future.set_result(42)
+
+print(f'Is my_future done? {my_future.done()}')
+print(f'What is the result of my_future? {my_future.result()}')
+```
+
+Quando usamos `await` em um future estamos dizendo pause o future até que ele 
+tenha algum cido definido um valor. Uma vez que o future tenha cido definido 
+um valor para o future ele é levantdo e posso continuar a manipula-lo.

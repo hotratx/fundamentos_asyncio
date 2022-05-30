@@ -1,9 +1,3 @@
-# Asyncio
-
-
-## Coroutine, Tasks, Futures, Awaitables
-Coroutine e tasks podem ser utilizadas com `await`
-
 ### Futures 
 É um objeto que contém um valor que esperamos obter em algum ponto no futuro, 
 mas não agora.
