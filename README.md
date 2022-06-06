@@ -217,3 +217,16 @@ print(f'What is the result of my_future? {my_future.result()}')
 Quando usamos `await` em um future estamos dizendo pause o future até que ele 
 tenha algum cido definido um valor. Uma vez que o future tenha cido definido 
 um valor para o future ele é levantdo e posso continuar a manipula-lo.
+
+### Relação entre futures, tasks e coroutines
+Existe um forte relasionamento entre futures, tasks e coroutines. O `future` pode 
+ser representado por um valor que ainda não temos. Uma `task` pode ser 
+representada como uma combinação de `furute` e `coroutine`. Quanto criamos uma 
+`tasks` estamos criando um `future` vazio e executando uma `coroutine`. Então 
+quando uma `coroutine` tiver concluido com um exceção ou resultado, definimos 
+a exceção ou resultado como o resultado do `future`.
+
+Ambos `futures` e `tasks` possuem a classe base abstrate `Awaitable`. Esta classe 
+define o dunder método `__await__`. `Tasks` extendem `futures`.
+
+
