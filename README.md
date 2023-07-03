@@ -35,13 +35,13 @@ outras tarefas até que a tarefa que foi pausada já esteja pronta para continua
 a ser executada.
 
 ### Pausar uma execução `await`
-Para pausar uma execução usamos a palavra reservada `await`. O `await` é usualment 
-seguida por uma coroutina (mais especificament um objeto `awaitable`).
+Para pausar uma execução usamos a palavra reservada `await`. O `await` é usualmente 
+seguida por uma coroutina (mais especificamente um objeto `awaitable`).
 
-Usar `await` antes de uma coroutine irá executa-lá, ela também serve para 
+Usar `await` antes de uma `coroutine` irá executa-lá, ela também serve para 
 pausar a função até que ela esteja pronta para continuar a ser executada.
 
-Exemplos que não rodam de forma sequencial:
+Exemplos que rodam de forma sequencial:
 
 ```python
 import asyncio
@@ -57,9 +57,11 @@ async def main() -> None:
 
 asyncio.run(main())
 ```
-No primeiro `await` na chamada do add_one(1) o programa será pausado até o 
-retorno da função add_one(1) para em seguida executar o add_one(2). O seu funcionamento
+No primeiro `await` na chamada do `add_one(1)` o programa será pausado até o 
+retorno da `função add_one(1)` para em seguida executar o add_one(2). O seu funcionamento
 será o mesmo que uma função normal de código sequencial.
+
+exemplo 2:
 
 ```python
 import asyncio
@@ -88,9 +90,9 @@ no `event loop`. Tasks são wrappers sobre coroutines que agendam a coroutine
 para rodar no `event loop` o mais breve possível. Este agendamento e execução 
 acontecem de forma não bloqueante, uma vez criada a task, nos podemos executar 
 o código instantaneamente enquanto a task está em execução. Isso contrasta com 
-o uso da palavra -chave Aguardar que age de maneira bloqueadora, o que 
+o uso da palavra-chave `await` que age de maneira bloqueadora, o que 
 significa que pausamos toda a coroutina até o resultado da expressão retornar.
-O fato de podermos criar tarefas e agendá-las para executar instantaneamente no 
+O fato de podermos criar `tasks` e agendá-las para executar instantaneamente no 
 `event loop` significa que nós podemos executar multiplas tarefas no mesmo tempo.
 
 ### Criando tasks
@@ -152,8 +154,8 @@ A função será executada em torno de 3 segundos, pois estão sendo executadas 
 forma concorente.
 
 ### Cancelando Tasks
-As `tasks` possuiem um método `cancel` para parar a task. O cancelamento de uma
-`task` irá levantar um `CancelledError`, devemos manipular este erro.
+As `tasks` possuem o método `cancel` que serve para parar a task. O cancelamento de uma
+`task` irá levantar um `CancelledError` o qual devemos manipular.
 
 ```python
 import asyncio
@@ -181,13 +183,13 @@ Uma vez chamado o `long_task.cancel()` a task não será cancelada imediatamente
 ela será cancelada no momento em que ela chegar em um `await`.
 
 ### Configurando timeout
-Em vez de verificar em intervalo de tempo se a tarefa para cancelar podemos 
-usar um função auxiliar onde especificamos um tempo maximo caso a tarefa ultrapase 
-será cancelada automaticamente.
+Em vez de verificar em intervalos de tempo uma tarefa para verificar se cancelamos 
+ou não, podemos usar um função auxiliar onde especificamos um tempo maximo caso 
+a tarefa ultrapase será cancelada automaticamente.
 
 O asyncio prove `asyncio.wait_for`, esta função pega um coroutine ou uma task 
 e um timeout especifico em segundos e retorna uma corotina que podemos usar com 
-await. Se a task demorar mais que o tempo definido será levantado um TimeoutException.
+`await`. Se a task demorar mais que o tempo definido será levantado um `TimeoutException`.
 
 ### Usando Shield
 Caso queiramos saber se a tasks está demorando mais que o esperdo sem cancelar 
@@ -214,19 +216,19 @@ print(f'Is my_future done? {my_future.done()}')
 print(f'What is the result of my_future? {my_future.result()}')
 ```
 
-Quando usamos `await` em um future estamos dizendo pause o future até que ele 
-tenha algum cido definido um valor. Uma vez que o future tenha cido definido 
-um valor para o future ele é levantdo e posso continuar a manipula-lo.
+Quando usamos `await` em um future estamos dizendo pause o future até que 
+tenha cido definido um valor. Uma vez que tanhamos definido 
+um valor para o future ele é levantado e podemos continuar a manipula-lo.
 
 ### Relação entre futures, tasks e coroutines
-Existe um forte relasionamento entre futures, tasks e coroutines. O `future` pode 
+Existe um forte relacionamento entre `futures`, `tasks` e `coroutines`. O `future` pode 
 ser representado por um valor que ainda não temos. Uma `task` pode ser 
 representada como uma combinação de `furute` e `coroutine`. Quanto criamos uma 
-`tasks` estamos criando um `future` vazio e executando uma `coroutine`. Então 
-quando uma `coroutine` tiver concluido com um exceção ou resultado, definimos 
+`task` estamos criando um `future` vazio e executando uma `coroutine`. Então 
+quando uma `coroutine` tiver cido concluida com uma exceção ou resultado, definimos 
 a exceção ou resultado como o resultado do `future`.
 
-Ambos `futures` e `tasks` possuem a classe base abstrate `Awaitable`. Esta classe 
+Ambos `futures` e `tasks` possuem a classe base abstrata `Awaitable`. Esta classe 
 define o dunder método `__await__`. `Tasks` extendem `futures`.
 
 
